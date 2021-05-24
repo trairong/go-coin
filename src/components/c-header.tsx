@@ -1,31 +1,32 @@
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button, Col, Layout, Menu, Row } from "antd";
+import { Button, Col, Drawer, Layout, Menu, Row } from "antd";
 import ViewSequentialIcon from "@2fd/ant-design-icons/lib/ViewSequential";
 import MoonWaningCrescentIcon from "@2fd/ant-design-icons/lib/MoonWaningCrescent";
 import LightbulbOnOutlineIcon from "@2fd/ant-design-icons/lib/LightbulbOnOutline";
 import AccountIcon from "@2fd/ant-design-icons/lib/Account";
 import BellIcon from "@2fd/ant-design-icons/lib/Bell";
 import { Context } from "../context";
+import Avatar from "antd/lib/avatar/avatar";
 
 interface Props {}
 
 const theme = {
   dark: {
-    colorbuttonBuy: "#03dac5",
+    colorbuttonBuy: "#00e676",
     theme: {
-      colorBackground: "#0a0a0a",
+      colorBackground: "#363535",
       colorFont: "#fff",
       colorPrimary: "#bb86fc",
       colorError: "#f50057",
       colorCard: "#212121",
       colorGraf: "#03dac5",
-      colorContent: "#2f2f2f",
-      colorScroll: "#212121"
+      colorContent: "#1d1c1c",
+      colorScroll: "#212121",
     },
   },
   light: {
-    colorbuttonBuy: "#bb86fc",
+    colorbuttonBuy: "#00e676",
     theme: {
       colorBackground: "#fff",
       colorFont: "#03dac5",
@@ -42,6 +43,7 @@ const theme = {
 export default function CHeader({}: Props): ReactElement {
   const { state, dispatch } = useContext(Context);
   const [isTheme, setisTheme] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const setTheme = (theme, istheme) => {
     setisTheme(istheme);
@@ -57,6 +59,13 @@ export default function CHeader({}: Props): ReactElement {
         primary: theme.colorbuttonBuy,
       },
     });
+  };
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
   };
 
   useEffect(() => {}, [isTheme]);
@@ -121,6 +130,7 @@ export default function CHeader({}: Props): ReactElement {
             <Button
               type="link"
               style={{ margin: "10px 10px" }}
+              onClick={showDrawer}
               icon={
                 <AccountIcon
                   style={{ fontSize: 30, color: state.theme.colorPrimary }}
@@ -139,28 +149,58 @@ export default function CHeader({}: Props): ReactElement {
           </Col>
         </Row>
       </Headers>
+      <Drawer
+        width={300}
+        title={
+          <>
+            <ContentHeader theme={state.theme}>
+              <Avatar
+                size={{ xs: 80, sm: 80, md: 80, lg: 80, xl: 80, xxl: 100 }}
+                src="images/profile.png"
+              />
+              <TitleName>TRAIRONG JAMPANIL</TitleName>
+            </ContentHeader>
+          </>
+        }
+        placement="right"
+        closable={false}
+        onClose={onClose}
+        visible={visible}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
     </>
   );
 }
 
 const Menus = () => {
   const { state, dispatch } = useContext(Context);
-  const [isMenu, setisMenu] = useState('1')
+  const [isMenu, setisMenu] = useState("1");
 
-  const submitMenu=(item)=>{
-    setisMenu(item)
-  }
+  const submitMenu = (item) => {
+    setisMenu(item);
+  };
 
-  useEffect(() => {
-   
-  }, [isMenu])
+  useEffect(() => {}, [isMenu]);
   return (
     <ContentMenu selectedKeys={[isMenu]} mode="horizontal" theme={state.theme}>
-      <MenuItems key="1" onClick={()=>submitMenu('1')}>ตลาดซื้อขาย</MenuItems>
-      <MenuItems key="2" onClick={()=>submitMenu('2')}>ถอนเงิน</MenuItems>
-      <MenuItems key="3" onClick={()=>submitMenu('3')}>ฝากเงิน</MenuItems>
-      <MenuItems key="4" onClick={()=>submitMenu('4')}>วิธีการสมัคร</MenuItems>
-      <MenuItems key="5" onClick={()=>submitMenu('5')}>บัญชีธนาคาร</MenuItems>
+      <MenuItems key="1" onClick={() => submitMenu("1")}>
+        ตลาดซื้อขาย
+      </MenuItems>
+      <MenuItems key="2" onClick={() => submitMenu("2")}>
+        ถอนเงิน
+      </MenuItems>
+      <MenuItems key="3" onClick={() => submitMenu("3")}>
+        ฝากเงิน
+      </MenuItems>
+      <MenuItems key="4" onClick={() => submitMenu("4")}>
+        วิธีการสมัคร
+      </MenuItems>
+      <MenuItems key="5" onClick={() => submitMenu("5")}>
+        บัญชีธนาคาร
+      </MenuItems>
     </ContentMenu>
   );
 };
@@ -190,7 +230,7 @@ const MenuItems = styled(Menu.Item)``;
 const Headers = styled(Layout.Header)`
   height: 80px;
   background-color: ${({ theme }) => theme.colorBackground};
-  border-bottom: solid 5px ${({ theme }) => theme.colorPrimary};
+  /* border-bottom: solid 5px ${({ theme }) => theme.colorPrimary}; */
   transform: translateY(0);
   transition: transform 300ms 300ms cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0ms 300ms, background-color 150ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -199,4 +239,25 @@ const Headers = styled(Layout.Header)`
     0 12.5px 10px rgb(0 0 0 / 6%), 0 39.3px 17.9px rgb(0 0 0 / 0%),
     0 41.8px 33.4px rgb(0 0 0 / 0%), 0 100px 80px rgb(0 0 0 / 0%);
   z-index: 4;
+`;
+
+const ContentHeader = styled.div`
+  width: 100%;
+  height: 180px;
+  /* background-color: ${({ theme }) => theme.colorBackground}; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0.8;
+  box-shadow: 0 2.8px 2.2px rgb(0 0 0 / 3%), 0 6.7px 5.3px rgb(0 0 0 / 5%),
+    0 12.5px 10px rgb(0 0 0 / 6%), 0 39.3px 17.9px rgb(0 0 0 / 0%),
+    0 41.8px 33.4px rgb(0 0 0 / 0%), 0 100px 80px rgb(0 0 0 / 0%);
+`;
+
+const TitleName = styled.div`
+  font-size: 18px;
+  padding-top: 10px;
+  color: white;
+  font-weight: bold;
 `;

@@ -40,7 +40,7 @@ export interface InitialState {
 
 export const initialState: InitialState = {
   routMenu: "pages/dashbord",
-  primary: "#03dac5",
+  primary: "#00e676",
   theme: {
     colorBackground: "#0a0a0a",
     colorFont: "#fff",

@@ -1,17 +1,13 @@
 import React, { ReactElement, useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Pie } from "@ant-design/charts";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Input, Row, Select } from "antd";
 import { Context } from "../../context";
-interface Props {
-  
-}
+interface Props {}
 
 const Dashbord: React.FC = () => {
   const { state, dispatch } = useContext(Context);
   const [isBTN, setisBTN] = useState(false);
-  
-  
 
   var data = [
     {
@@ -63,13 +59,14 @@ const Dashbord: React.FC = () => {
   const submitBTN = (is_btn) => {
     setisBTN(is_btn);
   };
+  const { Option } = Select;
   return (
     <>
       <Contents theme={state.theme}>
-        <Row gutter={16}>
+        <Row >
           <Col span={24}>
             <Colbuy theme={state.theme}>
-              <Row>
+              <Row style={{padding: 10}}>
                 <Col span={16}></Col>
                 <Col span={8}>
                   <Row>
@@ -77,7 +74,12 @@ const Dashbord: React.FC = () => {
                       <Button
                         type={isBTN ? "primary" : "default"}
                         block
-                        style={{ borderRadius: 0 }}
+                        style={{
+                          borderRadius: 0,
+                          fontWeight: "bold",
+                          fontSize: 18,
+                          height: 50,
+                        }}
                         onClick={() => submitBTN(true)}
                       >
                         ซื้อ
@@ -87,11 +89,129 @@ const Dashbord: React.FC = () => {
                       <Button
                         type={!isBTN ? "primary" : "default"}
                         block
-                        style={{ borderRadius: 0 }}
+                        style={{
+                          borderRadius: 0,
+                          fontWeight: "bold",
+                          fontSize: 18,
+                          height: 50,
+                        }}
                         onClick={() => submitBTN(false)}
                       >
                         ขาย
                       </Button>
+                    </Col>
+                    <Col span={24}>
+                      <Selects
+                        // bordered={false}
+
+                        showSearch
+                        optionFilterProp="children"
+                        defaultValue="1"
+                        filterOption={(input, option) =>
+                          option.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA, optionB) =>
+                          optionA.children
+                            .toLowerCase()
+                            .localeCompare(optionB.children.toLowerCase())
+                        }
+                      >
+                        <Option value="1">Bitcoin/THB</Option>
+                        <Option value="2">Doge/THB</Option>
+                        <Option value="3">XRP/THB</Option>
+                      </Selects>
+                      <div style={{ marginTop: 10 }}>
+                        <span
+                          style={{
+                            fontSize: 14,
+                            fontWeight: "bold",
+                            color: state.theme.colorFont,
+                          }}
+                        >
+                          จำนวนที่ต้องการจ่าย
+                        </span>
+                      </div>
+                    </Col>
+                    <Col span={12}>
+                      <span
+                        style={{
+                          fontSize: 30,
+                          fontWeight: "bold",
+                          color: state.theme.colorFont,
+                        }}
+                      >
+                        THB
+                      </span>
+                    </Col>
+                    <Col span={12}>
+                      <Input
+                        placeholder="0.00"
+                        style={{
+                          height: "100%",
+                          fontSize: 30,
+                          border: "none",
+                          backgroundColor: state.theme.colorBackground,
+                          textAlign: "end",
+                          fontWeight: "bold",
+                        }}
+                      />
+                    </Col>
+                    <Col span={24} style={{ textAlign: "end" }}>
+                      <span
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "bold",
+                          color: state.theme.colorFont,
+                        }}
+                      >
+                        ยอดเงินคงเหลือ 1000.00 ฿
+                      </span>
+                    </Col>
+                    <Col span={24}>
+                      <Row style={{ marginTop: 30 }}>
+                        <Col span={12}>
+                          <span
+                            style={{
+                              fontSize: 20,
+                              fontWeight: "bold",
+                              color: state.theme.colorFont,
+                            }}
+                          >
+                            จะได้รับเหรียญ
+                          </span>
+                        </Col>
+                        <Col span={12} style={{ textAlign: "end" }}>
+                          <span
+                            style={{
+                              fontSize: 20,
+                              fontWeight: "bold",
+                              color: state.theme.colorFont,
+                            }}
+                          >
+                            50.2002020
+                          </span>
+                        </Col>
+                      </Row>
+                      <Col span={24}>
+                        <Button
+                      
+                          block
+                          style={{
+                            borderRadius: 5,
+                            fontWeight: "bold",
+                            fontSize: 18,
+                            height: 50,
+                            marginTop: 50,
+                            border: 0,
+                            backgroundColor: state.primary,
+                            color: '#fff'
+                          }}
+                        >
+                          ซื้อ
+                        </Button>
+                      </Col>
                     </Col>
                   </Row>
                 </Col>
@@ -112,7 +232,6 @@ const Dashbord: React.FC = () => {
             </ColContents>
           </Col>
         </Row>
-        
       </Contents>
     </>
   );
@@ -151,8 +270,9 @@ const Headers = styled.div`
 `;
 
 const Colbuy = styled(Col)`
-  height: 400px;
+  /* height: 400px; */
   padding: 16px;
+  border-radius: 5px;
   background-color: ${({ theme }) => theme.colorBackground};
   box-shadow: 0 2px 4px rgb(0 0 0 / 50%);
   transform: translateY(0);
@@ -162,7 +282,7 @@ const Colbuy = styled(Col)`
 `;
 const ColContents = styled.div`
   height: 500px;
-  border-radius: 0px;
+  border-radius: 5px;
   background-color: ${({ theme }) => theme.colorBackground};
   box-shadow: 0 2px 4px rgb(0 0 0 / 50%);
   transform: translateY(0);
@@ -178,4 +298,23 @@ const ColSaRub = styled.div`
   transition: transform 300ms 300ms cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0ms 300ms, background-color 150ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
+`;
+
+const Selects = styled(Select)`
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  .ant-select-selector {
+    height: 50px !important;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 0px !important;
+  }
+  .ant-select-selection-item {
+    display: flex !important;
+    align-items: center !important;
+  }
 `;

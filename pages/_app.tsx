@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const value = { state, dispatch };
 
   useEffect(() => {
-    changeAntdTheme(generateThemeColor(state.primary));
+    changeAntdTheme(generateThemeColor(state.theme.colorPrimary));
   }, [state.theme,state.primary]);
   return (
     <>
